@@ -25,9 +25,11 @@
     <Compile Include="car.py" />
     <Compile Include="graph_basic.py" />
     <Compile Include="pathfinding.py" />
+    <Compile Include="quadtree.py" />
     <Compile Include="rider.py" />
     <Compile Include="simulation.py" />
     <Compile Include="test_complete.py" />
+    <Compile Include="test_quadtree.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="map.csv" />

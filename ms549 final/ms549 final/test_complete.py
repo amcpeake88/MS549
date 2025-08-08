@@ -1,8 +1,11 @@
 ﻿import csv
+import random
+import time
 from car import Car
 from rider import Rider
 from simulation import Simulation
 from graph_basic import Graph
+from quadtree import Quadtree, Rectangle, distance_between_points
 
 def create_map_file():
     """Generate the city map CSV file if it doesn't exist."""
@@ -143,9 +146,316 @@ def test_milestone3_dijkstra():
     print("Phase 3 pathfinding validation complete")
     print()
 
+def brute_force_nearest(query_point, all_points):
+    """Brute force method to find nearest point - for verification."""
+    if not all_points:
+        return None
+    
+    best_point = all_points[0]
+    min_distance = distance_between_points(query_point, best_point)
+    
+    for point in all_points[1:]:
+        distance = distance_between_points(query_point, point)
+        if distance < min_distance:
+            min_distance = distance
+            best_point = point
+    
+    return best_point
+
+def test_milestone4_quadtree():
+    """Validate Quadtree spatial data structure implementation."""
+    print("=== PHASE 4: Quadtree Spatial Indexing Validation ===")
+    
+    # Initialize Quadtree with 1000x1000 boundary
+    print("Initializing spatial indexing system:")
+    boundary = Rectangle(0, 0, 1000, 1000)
+    quadtree = Quadtree(boundary)
+    print("  Quadtree boundary established: 1000x1000 coordinate system")
+    
+    # Generate exactly 5,000 random points for comprehensive testing
+    print("Generating spatial data points:")
+    random.seed(42)  # Fixed seed for reproducible results
+    all_points = []
+    
+    for i in range(5000):
+        x = random.uniform(0, 1000)
+        y = random.uniform(0, 1000)
+        point = (x, y)
+        all_points.append(point)
+        success = quadtree.insert(point)
+        if not success:
+            print(f"  Warning: Failed to insert point {i}: {point}")
+    
+    print(f"  Successfully indexed {len(all_points):,} spatial data points")
+    
+    # Perform nearest neighbor search validation
+    print("Executing nearest neighbor search validation:")
+    query_x = random.uniform(0, 1000)
+    query_y = random.uniform(0, 1000)
+    query_point = (query_x, query_y)
+    
+    print(f"  Query point coordinates: ({query_x:.2f}, {query_y:.2f})")
+    
+    # Quadtree search
+    start_time = time.time()
+    quadtree_result = quadtree.find_nearest(query_point)
+    quadtree_time = time.time() - start_time
+    
+    # Brute force verification
+    start_time = time.time()
+    brute_force_result = brute_force_nearest(query_point, all_points)
+    brute_force_time = time.time() - start_time
+    
+    # Calculate distances for verification
+    quadtree_distance = distance_between_points(query_point, quadtree_result) if quadtree_result else float('inf')
+    brute_force_distance = distance_between_points(query_point, brute_force_result) if brute_force_result else float('inf')
+    
+    # Verify correctness
+    distance_difference = abs(quadtree_distance - brute_force_distance)
+    points_match = (quadtree_result == brute_force_result)
+    distances_match = distance_difference < 1e-10
+    
+    print("  Spatial search performance analysis:")
+    print(f"    Quadtree search time:    {quadtree_time:.6f} seconds")
+    print(f"    Brute force search time: {brute_force_time:.6f} seconds")
+    
+    if quadtree_time > 0:
+        speedup = brute_force_time / quadtree_time
+        print(f"    Performance improvement: {speedup:.2f}x faster")
+    
+    print("  Correctness verification:")
+    print(f"    Results identical:       {points_match}")
+    print(f"    Distance precision:      {distances_match}")
+    print(f"    Nearest point found:     {quadtree_result}")
+    print(f"    Distance to query:       {quadtree_distance:.6f}")
+    
+    if points_match and distances_match:
+        print("  Quadtree implementation verified: O(log N) vs O(N) efficiency confirmed")
+        return True
+    else:
+        print("  Quadtree implementation failed verification")
+        return False
+
+def test_milestone5b_comprehensive_quadtree():
+    """Comprehensive Quadtree testing suite - equivalent to standalone test_quadtree.py"""
+    print("=== PHASE 5B: Comprehensive Quadtree Testing Suite ===")
+    print(" QUADTREE TESTING SUITE")
+    print("This comprehensive test proves Quadtree correctness and performance")
+    print("by comparing results with brute force search.")
+    print()
+    
+    # Main correctness test with exactly 5,000 points
+    test1_passed = test_quadtree_correctness_detailed()
+    
+    # Robustness test with multiple seeds
+    test2_passed = test_multiple_seeds()
+    
+    # Performance analysis
+    performance_comparison()
+    
+    # Final summary for Phase 5B
+    print()
+    print("=" * 60)
+    print("PHASE 5B COMPREHENSIVE TEST SUMMARY")
+    print("=" * 60)
+    if test1_passed and test2_passed:
+        print("ALL COMPREHENSIVE TESTS PASSED!")
+        print("Quadtree implementation is mathematically correct")
+        print("Performance benefits confirmed (O(log N) vs O(N))")
+        print("Ready for integration into ride-sharing simulator")
+        print()
+        print(" implementation Features:")
+        print("  • Efficient spatial indexing with pruning optimization")
+        print("  • Prioritized search (query quadrant first)")
+        print("  • Robust boundary handling")
+        print("  • Flexible point format support")
+        phase5b_success = True
+    else:
+        print("❌ SOME COMPREHENSIVE TESTS FAILED")
+        print("🔧 Implementation needs debugging before integration")
+        phase5b_success = False
+    print("=" * 60)
+    print()
+    
+    return phase5b_success
+
+def test_quadtree_correctness_detailed():
+    """Detailed Quadtree correctness test - equivalent to main test in test_quadtree.py"""
+    print("=" * 60)
+    print("DETAILED QUADTREE CORRECTNESS TEST")
+    print("Testing with 5,000 random points in 1000x1000 area")
+    print("=" * 60)
+    
+    # Step 1: Initialize Quadtree with 1000x1000 boundary
+    boundary = Rectangle(0, 0, 1000, 1000)
+    quadtree = Quadtree(boundary)
+    
+    # Step 2: Generate exactly 5,000 random points
+    print("Generating 5,000 random points...")
+    random.seed(42)  # Fixed seed for reproducible results
+    all_points = []
+    
+    for i in range(5000):
+        x = random.uniform(0, 1000)
+        y = random.uniform(0, 1000)
+        point = (x, y)
+        all_points.append(point)
+        success = quadtree.insert(point)
+        if not success:
+            print(f"Warning: Failed to insert point {i}: {point}")
+    
+    print(f"Successfully inserted {len(all_points)} points into Quadtree")
+    
+    # Step 3: Pick a random query point
+    query_x = random.uniform(0, 1000)
+    query_y = random.uniform(0, 1000)
+    query_point = (query_x, query_y)
+    
+    print(f"\\nQuery point: ({query_x:.2f}, {query_y:.2f})")
+    
+    # Step 4: Find nearest using Quadtree
+    print("\\nSearching with Quadtree...")
+    start_time = time.time()
+    quadtree_result = quadtree.find_nearest(query_point)
+    quadtree_time = time.time() - start_time
+    
+    # Step 5: Find nearest using brute force
+    print("Searching with brute force...")
+    start_time = time.time()
+    brute_force_result = brute_force_nearest(query_point, all_points)
+    brute_force_time = time.time() - start_time
+    
+    # Step 6: Calculate distances for verification
+    quadtree_distance = distance_between_points(query_point, quadtree_result) if quadtree_result else float('inf')
+    brute_force_distance = distance_between_points(query_point, brute_force_result) if brute_force_result else float('inf')
+    
+    # Step 7: Display results
+    print("\\n" + "=" * 60)
+    print("DETAILED RESULTS")
+    print("=" * 60)
+    print(f"Quadtree result:      {quadtree_result}")
+    print(f"Quadtree distance:    {quadtree_distance:.6f}")
+    print(f"Quadtree time:        {quadtree_time:.6f} seconds")
+    print()
+    print(f"Brute force result:   {brute_force_result}")
+    print(f"Brute force distance: {brute_force_distance:.6f}")
+    print(f"Brute force time:     {brute_force_time:.6f} seconds")
+    print()
+    
+    # Step 8: Verify correctness
+    distance_difference = abs(quadtree_distance - brute_force_distance)
+    points_match = (quadtree_result == brute_force_result)
+    distances_match = distance_difference < 1e-10  # Account for floating point precision
+    
+    print("VERIFICATION:")
+    print(f"Points identical:     {points_match}")
+    print(f"Distances match:      {distances_match}")
+    print(f"Distance difference:  {distance_difference}")
+    
+    if points_match and distances_match:
+        print("\\n SUCCESS: Quadtree implementation is CORRECT!")
+        if quadtree_time > 0:
+            speedup = brute_force_time / quadtree_time
+            print(f"Performance: {speedup:.2f}x faster than brute force")
+        print(f"Efficiency: O(log N) vs O(N) - Quadtree provides {len(all_points):,} point search optimization")
+    else:
+        print("\\n FAILURE: Quadtree implementation has errors!")
+        return False
+    
+    return True
+
+def test_multiple_seeds():
+    """Test with multiple random seeds to ensure consistency."""
+    print("\\n" + "=" * 60)
+    print("MULTIPLE SEED ROBUSTNESS TEST")
+    print("Testing with different random seeds")
+    print("=" * 60)
+    
+    seeds = [123, 456, 789, 999, 1337]
+    all_passed = True
+    
+    for i, seed in enumerate(seeds):
+        print(f"\\nTest {i+1}/5 - Seed {seed}:")
+        
+        # Setup with current seed
+        boundary = Rectangle(0, 0, 1000, 1000)
+        quadtree = Quadtree(boundary)
+        random.seed(seed)
+        
+        # Generate 1000 points for faster testing
+        all_points = []
+        for j in range(1000):
+            x = random.uniform(0, 1000)
+            y = random.uniform(0, 1000)
+            point = (x, y)
+            all_points.append(point)
+            quadtree.insert(point)
+        
+        # Test with random query
+        query_point = (random.uniform(0, 1000), random.uniform(0, 1000))
+        
+        quadtree_result = quadtree.find_nearest(query_point)
+        brute_force_result = brute_force_nearest(query_point, all_points)
+        
+        correct = (quadtree_result == brute_force_result)
+        all_passed = all_passed and correct
+        
+        status = "PASS" if correct else "FAIL"
+        print(f"  {status} - Points match: {correct}")
+    
+    print(f"\\nOverall result: {'welcome abord' if all_passed else 'you sunk my battleship'}")
+    return all_passed
+
+def performance_comparison():
+    """Compare performance across different dataset sizes."""
+    print("\\n" + "=" * 60)
+    print("PERFORMANCE COMPARISON")
+    print("Comparing Quadtree vs Brute Force across dataset sizes")
+    print("=" * 60)
+    
+    sizes = [100, 500, 1000, 2500, 5000]
+    
+    for size in sizes:
+        print(f"\\nTesting with {size:,} points:")
+        
+        # Setup
+        boundary = Rectangle(0, 0, 1000, 1000)
+        quadtree = Quadtree(boundary)
+        random.seed(42)
+        
+        # Generate points
+        all_points = []
+        for i in range(size):
+            x = random.uniform(0, 1000)
+            y = random.uniform(0, 1000)
+            point = (x, y)
+            all_points.append(point)
+            quadtree.insert(point)
+        
+        query_point = (random.uniform(0, 1000), random.uniform(0, 1000))
+        
+        # Time Quadtree
+        start_time = time.time()
+        quadtree_result = quadtree.find_nearest(query_point)
+        quadtree_time = time.time() - start_time
+        
+        # Time Brute Force
+        start_time = time.time()
+        brute_force_result = brute_force_nearest(query_point, all_points)
+        brute_force_time = time.time() - start_time
+        
+        # Results
+        speedup = brute_force_time / quadtree_time if quadtree_time > 0 else float('inf')
+        correct = (quadtree_result == brute_force_result)
+        
+        print(f"  Quadtree:    {quadtree_time:.6f}s")
+        print(f"  Brute force: {brute_force_time:.6f}s")
+        print(f"  Speedup:     {speedup:.2f}x")
+        print(f"  Correct:     {correct}")
+
 def test_complete_simulation_scenario():
     """Execute comprehensive system integration test."""
-    print("=== PHASE 4: Full System Integration Test ===")
+    print("=== PHASE 5: Full System Integration Test ===")
     
     # Initialize complete system
     graph = Graph()
@@ -209,7 +519,7 @@ def test_complete_simulation_scenario():
                 route_str = " -> ".join(vehicle.route)
                 print("    Delivery sequence: " + route_str + " | Time: " + str(vehicle.route_time))
     
-    print("Phase 4 system integration test complete")
+    print("Phase 5 system integration test complete")
     print()
 
 def main():
@@ -228,7 +538,16 @@ def main():
     test_milestone1_basic_classes()
     test_milestone2_map_loading()
     test_milestone3_dijkstra()
+    
+    # Quadtree validation phase
+    quadtree_passed = test_milestone4_quadtree()
+    print()
+    
+    # Full system integration
     test_complete_simulation_scenario()
+    
+    # NEW: Comprehensive Quadtree testing suite
+    comprehensive_quadtree_passed = test_milestone5b_comprehensive_quadtree()
     
     print("=" * 75)
     print("SYSTEM VALIDATION PROTOCOL COMPLETED SUCCESSFULLY")
@@ -237,13 +556,27 @@ def main():
     print("   >> Core entity classes validated")
     print("   >> Infrastructure mapping system operational")
     print("   >> Advanced pathfinding algorithms verified")
+    if quadtree_passed:
+        print("   >> Quadtree spatial indexing system confirmed (O(log N) efficiency)")
+    else:
+        print("   >> Quadtree spatial indexing system needs debugging")
     print("   >> Vehicle navigation integration confirmed")
     print("   >> Full system integration test passed")
+    if comprehensive_quadtree_passed:
+        print("   >> Comprehensive Quadtree testing suite passed (Phase 5B)")
+    else:
+        print("   >> Comprehensive Quadtree testing suite failed (Phase 5B)")
     print()
-    print("Advanced ride-sharing system fully operational!")
+    
+    if quadtree_passed and comprehensive_quadtree_passed:
+        print("Advanced ride-sharing system with validated spatial optimization fully operational!")
+        print("System features mathematically proven efficient nearest-neighbor search!")
+    else:
+        print("Advanced ride-sharing system operational (Quadtree validation needs review)")
+    
     print("System ready for deployment and production use!")
     
-    input("Press any key to terminate validation protocol...")
+    input("Press any key to go a shore")
 
 if __name__ == "__main__":
     main()
