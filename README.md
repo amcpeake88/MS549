@@ -4,27 +4,22 @@ A discrete-event ride-sharing simulation using Dijkstra’s shortest path, Quadt
 
 Purpose & Design
 This project simulates ride requests in a city using:
-
 Event Engine – heapq-based priority queue for requests, pickups, and dropoffs.
-
 Quadtree – efficient nearest-driver lookup.
-
 Dijkstra – shortest-path routing between nodes.
-
 Analytics – trip counts, wait times, utilization.
-
 Visualization – generates simulation_summary.png with maps and charts.
 
 Repository Layout
-car.py Car class + Dijkstra integration
-rider.py Rider class
-graph_basic.py Graph loader (3-col & 7-col CSV support)
-enhanced_quadtree.py k-nearest search
-final_simulation.py Main simulation run()
-visualization_engine.py Creates PNG summary
-map.csv Sample map data
-test_complete.py Full console demo
-test_png.py Quick PNG test
+car.py – Car class + Dijkstra integration
+rider.py – Rider class
+graph_basic.py – Graph loader (3-col & 7-col CSV support)
+enhanced_quadtree.py – k-nearest search
+final_simulation.py – Main simulation run()
+visualization_engine.py – Creates PNG summary
+map.csv – Sample map data
+test_complete.py – Full console demo
+test_png.py – Quick PNG test
 
 How to Run
 
