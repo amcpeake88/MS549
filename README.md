@@ -1,12 +1,63 @@
-Advanced Ride-Sharing Simulation System with Spatial Optimization
-Purpose/Design
-This project implements a comprehensive ride-sharing simulation system featuring advanced pathfinding algorithms, efficient spatial data structures, and optimized vehicle dispatch capabilities. The system integrates Dijkstra's algorithm for route optimization with a Quadtree spatial indexing structure that achieves O(log N) nearest-neighbor search performance compared to O(N) brute force approaches, enabling efficient vehicle-passenger matching in large-scale transportation networks.
+Ride-Sharing Simulator — Final Project
+
+A discrete-event ride-sharing simulation using Dijkstra’s shortest path, Quadtree driver matching, and a dynamic event engine. Produces analytics and visualization of results.
+
+Purpose & Design
+This project simulates ride requests in a city using:
+
+Event Engine – heapq-based priority queue for requests, pickups, and dropoffs.
+
+Quadtree – efficient nearest-driver lookup.
+
+Dijkstra – shortest-path routing between nodes.
+
+Analytics – trip counts, wait times, utilization.
+
+Visualization – generates simulation_summary.png with maps and charts.
+
+Repository Layout
+car.py Car class + Dijkstra integration
+rider.py Rider class
+graph_basic.py Graph loader (3-col & 7-col CSV support)
+enhanced_quadtree.py k-nearest search
+final_simulation.py Main simulation run()
+visualization_engine.py Creates PNG summary
+map.csv Sample map data
+test_complete.py Full console demo
+test_png.py Quick PNG test
 
 How to Run
-Complete System Validation: Set test_complete.py as the startup file in Visual Studio by right-clicking in Solution Explorer and selecting "Set as Startup File". Run using F5 or Ctrl+F5, or click the green Start button. Alternatively, execute python test_complete.py in command line or Python Interactive.
 
-Standalone Quadtree Testing: Execute python test_quadtree.py in command line, or set as startup file in Visual Studio and run using F5 or the green Start button. This runs dedicated Quadtree verification with 5,000 random points and brute force comparison.
+Full Simulation + PNG
+python final_simulation.py --max-time 100 --num-cars 5 --arrival-rate 2.0 --map-file map.csv
+
+Console Demo
+python test_complete.py --max-time 100 --num-cars 5
+
+PNG Quick Test
+python test_png.py
+
+Key Features
+Dynamic Rider Generation – exponential inter-arrival for realistic requests.
+Car Dispatch – Quadtree finds nearest k cars, Dijkstra selects fastest route.
+Arrival Handling – updates car location at pickup and dropoff, re-inserts into Quadtree.
+Visualization – trip map, per-car trip counts, and wait time histogram.
 
 Dependencies
-Python Standard Library Only: heapq, csv, random, time, math
-No External Libraries Required: The system uses only Python's built-in functionality for maximum compatibility and ease of deployment.
+Python 3.9+
+matplotlib
+
+Install:
+pip install matplotlib
+
+Demo Checklist
+
+Show event engine loop with heapq.
+
+Explain rider generation and car assignment.
+
+Highlight Quadtree and Dijkstra integration.
+
+Show pickup/dropoff handlers updating car location.
+
+Run simulation and display simulation_summary.png.
