@@ -3,8 +3,8 @@ FINAL SIMULATION ANALYTICAL SUMMARY
 Total rides completed: 10
 Average wait time: 0.00 seconds
 Trips per car:
-  Car0: 1 trips
-  Car1: 1 trips
-  Car2: 3 trips
-  Car3: 1 trips
-  Car4: 4 trips
+  Car0: 3 trips
+  Car1: 2 trips
+  Car2: 2 trips
+  Car3: 2 trips
+  Car4: 1 trips

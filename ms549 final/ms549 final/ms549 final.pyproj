@@ -32,7 +32,9 @@
     <Compile Include="rider.py" />
     <Compile Include="simulation.py" />
     <Compile Include="test_complete.py" />
+    <Compile Include="test_png.py" />
     <Compile Include="test_quadtree.py" />
+    <Compile Include="test_run.py" />
     <Compile Include="visualization_engine.py" />
   </ItemGroup>
   <ItemGroup>
