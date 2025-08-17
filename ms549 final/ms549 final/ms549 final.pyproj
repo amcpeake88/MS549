@@ -23,6 +23,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="car.py" />
+    <Compile Include="enhanced_quadtree.py" />
+    <Compile Include="event_engine.py" />
+    <Compile Include="final_simulation.py" />
     <Compile Include="graph_basic.py" />
     <Compile Include="pathfinding.py" />
     <Compile Include="quadtree.py" />
@@ -30,6 +33,7 @@
     <Compile Include="simulation.py" />
     <Compile Include="test_complete.py" />
     <Compile Include="test_quadtree.py" />
+    <Compile Include="visualization_engine.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="map.csv" />

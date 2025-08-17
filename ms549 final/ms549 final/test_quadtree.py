@@ -194,7 +194,7 @@ def performance_comparison():
         print(f"  Correct:     {correct}")
 
 if __name__ == "__main__":
-    print("🌳 QUADTREE TESTING SUITE")
+    print(" QUADTREE TESTING SUITE")
     print("This comprehensive test proves Quadtree correctness and performance")
     print("by comparing results with brute force search.\\n")
     

@@ -1,0 +1,32 @@
+FINAL INTEGRATED SIMULATION RESULTS
+========================================
+
+Simulation Duration: 50.0s
+Fleet Size: 5
+Total Requests: 30
+Completed Trips: 17
+Completion Rate: 56.7%
+
+PERFORMANCE METRICS
+Average Wait Time: 10.17s
+Average Trip Duration: 10.17s
+Driver Utilization: 34.0%
+
+COMPLETED TRIPS
+RIDER_0001: F -> C (Wait: 4.0s, Duration: 4.0s)
+RIDER_0002: C -> F (Wait: 5.6s, Duration: 5.6s)
+RIDER_0003: G -> F (Wait: 8.2s, Duration: 8.2s)
+RIDER_0007: C -> F (Wait: 2.4s, Duration: 2.4s)
+RIDER_0005: A -> F (Wait: 8.7s, Duration: 8.7s)
+RIDER_0004: G -> B (Wait: 14.0s, Duration: 14.0s)
+RIDER_0006: G -> E (Wait: 9.9s, Duration: 9.9s)
+RIDER_0009: E -> F (Wait: 8.9s, Duration: 8.9s)
+RIDER_0010: B -> C (Wait: 11.0s, Duration: 11.0s)
+RIDER_0013: E -> B (Wait: 10.9s, Duration: 10.9s)
+RIDER_0017: D -> C (Wait: 5.9s, Duration: 5.9s)
+RIDER_0008: B -> E (Wait: 20.7s, Duration: 20.7s)
+RIDER_0014: G -> A (Wait: 15.7s, Duration: 15.7s)
+RIDER_0018: B -> F (Wait: 19.0s, Duration: 19.0s)
+RIDER_0020: E -> C (Wait: 7.1s, Duration: 7.1s)
+RIDER_0021: F -> E (Wait: 9.5s, Duration: 9.5s)
+RIDER_0019: G -> A (Wait: 11.4s, Duration: 11.4s)

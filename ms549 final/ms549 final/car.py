@@ -1,23 +1,17 @@
 import heapq
 
 class Car:
-    def __init__(self, car_id, location):
-        """
-        Initialize a Car object.
-        
-        Args:
-            car_id (str): A unique identifier for the car (e.g., "CAR001")
-            location: The car's initial location (node ID for pathfinding)
-        """
+    def __init__(self, car_id, initial_location):
         self.id = car_id
-        self.location = location
-        self.status = "available"
-        self.destination = None
+        self.location = initial_location
+        self.status = 'available'  # available, en_route_to_pickup, en_route_to_destination
+        self.assigned_rider = None  # NEW: Link to assigned Rider object
         
         # New attributes for route planning
         self.route = None
         self.route_time = None
-    
+        self.coordinates = None    
+
     def calculate_route(self, destination, graph):
         """
         Calculate the shortest route from current location to destination using Dijkstra's algorithm.
